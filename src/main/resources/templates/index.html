@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+<h2>Items</h2>
+<ul>
+    {{#items}}
+    <li>{{ name }}</li>
+    {{/items}}
+</ul>
+
+<h2>Users</h2>
+<ul>
+    {{#users}}
+    <li>{{ name }}. Votes: {{ votes.size }}</li>
+    {{/users}}
+</ul>
+
+<div>
+    <form action="/users" method="post">
+        New user: <input type="text" name="name" placeholder="name"/><input type="submit"/>
+    </form>
+</div>
+
+<div>
+    <form action="/items" method="post">
+        New item: <input type="text" name="name" placeholder="name"/><input type="submit"/>
+    </form>
+</div>
+
+<div>
+    <form action="/votes" method="post">
+        New vote. User:
+        <select name="user">
+            {{#users}}
+            <option value="{{id}}">{{name}}</option>
+            {{/users}}
+        </select>
+        Item:
+        <select name="item">
+            {{#items}}
+            <option value="{{id}}">{{name}}</option>
+            {{/items}}
+        </select>
+        Vote:
+        <input type="text" name="vote" placeholder="name"/>
+        <input type="submit"/>
+    </form>
+</div>
+</body>
+</html>
+
