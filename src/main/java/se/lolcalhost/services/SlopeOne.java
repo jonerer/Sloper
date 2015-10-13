@@ -72,7 +72,7 @@ public class SlopeOne {
         Skogsvandrarn.put(BlåKängor, 5.0f);
         Skogsvandrarn.put(GrönaKängor, 4.1f);
         Skogsvandrarn.put(RödaKängor, 4.3f);
-        Skogsvandrarn.put(RödaSneakers, 2.1f);
+        Skogsvandrarn.put(RödaSneakers, 1.1f);
         Skogsvandrarn.put(GrönaKlackskor, 1.0f);
         Skogsvandrarn.put(SneakersMedFlames, 0.4f);
         data.put(new UserId("Skogsvandrarn"), Skogsvandrarn);
@@ -82,30 +82,23 @@ public class SlopeOne {
         SlopeOne so = new SlopeOne(data);
         System.out.println("Here's the data I have accumulated...");
         so.printData();
-        // then, I'm going to test it out...
 
         HashMap<ItemId, Float> user = new HashMap<ItemId, Float>();
         System.out.println("Ok, now we predict...");
+        // RÖSTER
         user.put(RödaSneakers, 5.0f);
+        user.put(BlåKlackskor, 1f);
+
         System.out.println("Inputting...");
         SlopeOne.print(user);
         System.out.println("Getting...");
         Map<ItemId, Float> predictions = so.predict(user);
-        SlopeOne.print(MapUtil.sortByValue(predictions));
-        //
-//        user.put(GrönaKlackskor, 0.2f);
-//        System.out.println("Inputting...");
-//        SlopeOne.print(user);
-//        System.out.println("Getting...");
-//        SlopeOne.print(so.predict(user));
+        SlopeOne.print(predictions);
+
 
         // förberett:
 //        user.put(BlåKlackskor, 1f);
 //        user.put(BlåSneakers, 2.1f);
-
-    }
-
-    private static void printSorted(Map<ItemId, Float> predictions) {
 
     }
 
@@ -211,7 +204,8 @@ public class SlopeOne {
     }
 
     public static void print(Map<ItemId, Float> user) {
-        for (ItemId j : user.keySet()) {
+        Map<ItemId, Float> itemIdFloatMap = MapUtil.sortByValue(user);
+        for (ItemId j : itemIdFloatMap.keySet()) {
             System.out.println(" " + j + " --> " + user.get(j).floatValue());
         }
     }
@@ -266,25 +260,20 @@ class UserId {
     }
 }
 
-class MapUtil
-{
+class MapUtil {
     public static <K, V extends Comparable<? super V>> Map<K, V>
-    sortByValue( Map<K, V> map )
-    {
+    sortByValue(Map<K, V> map) {
         List<Map.Entry<K, V>> list =
-                new LinkedList<Map.Entry<K, V>>( map.entrySet() );
-        Collections.sort( list, new Comparator<Map.Entry<K, V>>()
-        {
-            public int compare( Map.Entry<K, V> o1, Map.Entry<K, V> o2 )
-            {
-                return -(o1.getValue()).compareTo( o2.getValue() );
+                new LinkedList<Map.Entry<K, V>>(map.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
+            public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
+                return -(o1.getValue()).compareTo(o2.getValue());
             }
-        } );
+        });
 
         Map<K, V> result = new LinkedHashMap<K, V>();
-        for (Map.Entry<K, V> entry : list)
-        {
-            result.put( entry.getKey(), entry.getValue() );
+        for (Map.Entry<K, V> entry : list) {
+            result.put(entry.getKey(), entry.getValue());
         }
         return result;
     }
