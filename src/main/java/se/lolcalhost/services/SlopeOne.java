@@ -56,7 +56,7 @@ public class SlopeOne {
         RödaSkor.put(BlåSneakers, 2.0f);
         RödaSkor.put(SneakersMedFlames, 4.5f);
         RödaSkor.put(RödaSneakers, 4.2f);
-        RödaSkor.put(RödaKlackskor, 1.0f);
+        RödaSkor.put(RödaKlackskor, 5.0f);
         RödaSkor.put(GrönaKlackskor, 1.0f);
         data.put(new UserId("RödaSkor"), RödaSkor);
 
@@ -90,7 +90,8 @@ public class SlopeOne {
         System.out.println("Inputting...");
         SlopeOne.print(user);
         System.out.println("Getting...");
-        SlopeOne.print(so.predict(user));
+        Map<ItemId, Float> predictions = so.predict(user);
+        SlopeOne.print(MapUtil.sortByValue(predictions));
         //
 //        user.put(GrönaKlackskor, 0.2f);
 //        System.out.println("Inputting...");
@@ -99,8 +100,12 @@ public class SlopeOne {
 //        SlopeOne.print(so.predict(user));
 
         // förberett:
-//        user.put(BlåKlackskor, 0.1f);
+//        user.put(BlåKlackskor, 1f);
 //        user.put(BlåSneakers, 2.1f);
+
+    }
+
+    private static void printSorted(Map<ItemId, Float> predictions) {
 
     }
 
@@ -258,6 +263,30 @@ class UserId {
 
     public String toString() {
         return content;
+    }
+}
+
+class MapUtil
+{
+    public static <K, V extends Comparable<? super V>> Map<K, V>
+    sortByValue( Map<K, V> map )
+    {
+        List<Map.Entry<K, V>> list =
+                new LinkedList<Map.Entry<K, V>>( map.entrySet() );
+        Collections.sort( list, new Comparator<Map.Entry<K, V>>()
+        {
+            public int compare( Map.Entry<K, V> o1, Map.Entry<K, V> o2 )
+            {
+                return -(o1.getValue()).compareTo( o2.getValue() );
+            }
+        } );
+
+        Map<K, V> result = new LinkedHashMap<K, V>();
+        for (Map.Entry<K, V> entry : list)
+        {
+            result.put( entry.getKey(), entry.getValue() );
+        }
+        return result;
     }
 }
 
