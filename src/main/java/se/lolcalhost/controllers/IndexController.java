@@ -13,10 +13,7 @@ import se.lolcalhost.repositories.UserRepository;
 import se.lolcalhost.repositories.VoteRepository;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by jonmar on 2015-10-12.
@@ -134,8 +131,11 @@ public class IndexController {
     @RequestMapping("/")
     public String index(Model model) {
         Iterable<User> users = userRepository.findAll();
+        List<User> users1 = makeCollection(users);
+        Collections.reverse(users1);
+
         Iterable<Item> items = itemRepository.findAll();
-        model.addAttribute("users", users);
+        model.addAttribute("users", users1);
         model.addAttribute("items", items);
 
         Iterable<User> users2 = userRepository.findAll();
